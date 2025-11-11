@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Dust Trajectory Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌌 Cosmic Dust Trajectory Calculator</h1>
+            <p class="subtitle">Monte Carlo simulation for particles entering Earth's atmosphere</p>
+        </header>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="control-panel">
+                    <h2>Simulation Parameters</h2>
+                    
+                    <div class="form-group">
+                        <label for="N">Number of Particles:</label>
+                        <input type="number" id="N" value="100000" min="1000" max="10000000" step="1000">
+                        <small>Recommended: 100,000 - 1,000,000</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="r_min">Min Radius (μm):</label>
+                        <input type="number" id="r_min" value="0.1" min="0.01" max="10" step="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="r_max">Max Radius (mm):</label>
+                        <input type="number" id="r_max" value="1.0" min="0.1" max="10" step="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="q">Size Distribution Index (q):</label>
+                        <input type="number" id="q" value="3.0" min="2.0" max="5.0" step="0.1">
+                        <small>Power law: dN/dr ∝ r^(-q)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seed">Random Seed (optional):</label>
+                        <input type="number" id="seed" value="" placeholder="Leave empty for random">
+                    </div>
+
+                    <button id="runSimulation" class="btn-primary">Run Simulation</button>
+                    <button id="exportCSV" class="btn-secondary" disabled>Export CSV</button>
+                </div>
+
+                <div class="status-panel" id="statusPanel" style="display: none;">
+                    <h3>Status</h3>
+                    <div id="statusText">Ready</div>
+                    <div class="progress-bar">
+                        <div id="progressBar" class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="results">Results</button>
+                    <button class="tab-button" data-tab="diagnostics">Diagnostics</button>
+                    <button class="tab-button" data-tab="about">About</button>
+                </div>
+
+                <div id="resultsTab" class="tab-content active">
+                    <div class="results-grid">
+                        <div class="plot-container">
+                            <h3>Size Distribution</h3>
+                            <div id="sizePlot"></div>
+                        </div>
+                        <div class="plot-container">
+                            <h3>Entry Velocity Distribution</h3>
+                            <div id="velocityPlot"></div>
+                        </div>
+                        <div class="plot-container">
+                            <h3>Source Family Distribution</h3>
+                            <div id="sourcePlot"></div>
+                        </div>
+                        <div class="plot-container">
+                            <h3>Entry Angle Distribution</h3>
+                            <div id="anglePlot"></div>
+                        </div>
+                        <div class="plot-container full-width">
+                            <h3>Impact Map (Latitude vs Longitude)</h3>
+                            <div id="mapPlot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="diagnosticsTab" class="tab-content">
+                    <div class="diagnostics-container">
+                        <h2>Simulation Diagnostics</h2>
+                        <div id="diagnosticsContent">
+                            <p class="placeholder">Run a simulation to see diagnostics</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="aboutTab" class="tab-content">
+                    <div class="about-container">
+                        <h2>About This Calculator</h2>
+                        <p>This tool implements a Monte Carlo simulation for cosmic dust particles entering Earth's atmosphere.</p>
+                        
+                        <h3>Methodology</h3>
+                        <ul>
+                            <li><strong>Source Families:</strong> Asteroidal, Cometary, and Interstellar dust</li>
+                            <li><strong>Size Distribution:</strong> Power law dN/dr ∝ r^(-q)</li>
+                            <li><strong>Gravitational Focusing:</strong> Accounts for Earth's gravity in capture cross-section</li>
+                            <li><strong>Entry Parameters:</strong> Computes velocity, angle, and impact location at 100 km altitude</li>
+                        </ul>
+
+                        <h3>Physical Constants</h3>
+                        <ul>
+                            <li>Earth Radius: 6,371 km</li>
+                            <li>Top of Atmosphere: 100 km</li>
+                            <li>Escape Velocity: ~11.2 km/s</li>
+                        </ul>
+
+                        <h3>Outputs</h3>
+                        <p>The simulation produces:</p>
+                        <ul>
+                            <li>Particle properties (size, mass, material, source)</li>
+                            <li>Entry parameters (velocity, angle, location)</li>
+                            <li>Diagnostic statistics and distributions</li>
+                            <li>CSV export for atmospheric modeling</li>
+                        </ul>
+
+                        <h3>References</h3>
+                        <p>Based on standard meteor physics and gravitational focusing theory. See the README for detailed formulas and assumptions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+
