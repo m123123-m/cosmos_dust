@@ -50,7 +50,7 @@ python app.py
 
 4. Open your browser and navigate to:
 ```
-http://localhost:5000
+http://localhost:8080
 ```
 
 ## Usage
@@ -77,16 +77,16 @@ http://localhost:5000
 The CSV export contains the following columns:
 
 - `source_family`: Particle source (asteroidal/cometary/interstellar)
-- `r_m`: Particle radius in meters
-- `m_kg`: Particle mass in kilograms
+- `r`: Particle radius in meters
+- `m`: Particle mass in kilograms
 - `material`: Material type (silicate/carbonaceous/iron_nickel)
-- `rho_kg_m3`: Material density
-- `v_inf_m_s`: Velocity at infinity (m/s)
-- `v_entry_m_s`: Entry velocity at 100 km altitude (m/s)
+- `rho`: Material density
+- `v_inf`: Velocity at infinity (m/s)
+- `v_entry`: Entry velocity at 100 km altitude (m/s)
 - `incoming_vector_x/y/z`: 3D unit vector of incoming direction
-- `impact_parameter_b_m`: Impact parameter in meters
-- `entry_angle_deg`: Entry angle from vertical (degrees)
-- `lat_deg`, `lon_deg`: Impact location coordinates
+- `impact_parameter_b`: Impact parameter in meters
+- `entry_angle`: Entry angle from vertical (degrees)
+- `lat`, `lon`: Impact location coordinates
 - `em_flag`: Flag for electromagnetic effects (r < 0.5 μm)
 - `high_energy_flag`: Flag for high energy particles (v > 50 km/s)
 - `selected_for_atmosphere`: Selection flag for atmospheric modeling
@@ -166,17 +166,34 @@ v_entry = sqrt(v_∞² + v_esc²)
 ```
 cosmos_dust/
 ├── app.py                 # Flask web application
-├── simulation.py         # Monte Carlo simulation engine
-├── requirements.txt      # Python dependencies
-├── README.md            # This file
+├── simulation.py          # Monte Carlo simulation engine
+├── requirements.txt       # Python dependencies
+├── README.md             # This file
+├── QUICKSTART.md         # Quick start guide
+├── DEPLOYMENT.md         # Deployment instructions
 ├── templates/
-│   └── index.html       # Main web interface
+│   └── index.html        # Main web interface
 └── static/
     ├── css/
-    │   └── style.css    # Styling
+    │   └── style.css     # Styling
     └── js/
-        └── main.js      # Frontend JavaScript
+        └── main.js       # Frontend logic
 ```
+
+## API Endpoints
+
+- `GET /`: Main web interface
+- `POST /api/simulate`: Run Monte Carlo simulation
+- `POST /api/export`: Export results to CSV
+- `GET /api/diagnostics`: Get diagnostics from last simulation
+
+## Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for deployment options including:
+- Heroku
+- Vercel
+- PythonAnywhere
+- Docker
 
 ## Validation & Uncertainty
 
@@ -220,3 +237,6 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 
 For questions or collaboration opportunities, please open an issue on GitHub.
 
+## Repository
+
+https://github.com/m123123-m/cosmos_dust
